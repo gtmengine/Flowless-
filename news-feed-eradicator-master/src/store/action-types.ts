@@ -28,6 +28,11 @@ export enum ActionType {
 	 * User confirmed site being disabled
 	 */
 	UI_SITES_SITE_DISABLE_CONFIRMED = 'sites/site/disable/confirmed',
+
+	/**
+	 * Select all sites
+	 */
+	UI_SITES_SELECT_ALL = 'sites/select/all',
 }
 
 export type ActionObject =
@@ -46,7 +51,8 @@ export type ActionObject =
 	| UiOptionsQuoteTabShow
 	| UiSitesSiteClick
 	| UiSitesSiteDisableConfirmShow
-	| UiSitesSiteDisableConfirmed;
+	| UiSitesSiteDisableConfirmed
+	| UiSitesSelectAll;
 
 export type BackgroundAction = {
 	type: ActionType.BACKGROUND_ACTION;
@@ -133,4 +139,7 @@ export type UiSitesSiteDisableConfirmed = {
 	type: ActionType.UI_SITES_SITE_DISABLE_CONFIRMED;
 	site: SiteId;
 	until: { t: 'forever' } | { t: 'temporarily'; milliseconds: number };
+};
+export type UiSitesSelectAll = {
+	type: ActionType.UI_SITES_SELECT_ALL;
 };

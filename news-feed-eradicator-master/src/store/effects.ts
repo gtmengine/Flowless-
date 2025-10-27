@@ -231,6 +231,37 @@ const confirmSiteDisabled: AppEffect = (store) => async (action) => {
 	}
 };
 
+const selectAllSites: AppEffect = (store) => async (action) => {
+	if (action.type === ActionType.UI_SITES_SELECT_ALL) {
+		const state = store.getState();
+		if (state.settings == null) {
+			return;
+		}
+
+		// Get all site IDs and their origins
+		const allOrigins: string[] = [];
+		const siteIds = Object.keys(Sites) as Array<keyof typeof Sites>;
+		
+		siteIds.forEach((siteId) => {
+			allOrigins.push(...Sites[siteId].origins);
+		});
+
+		// Request permissions for all sites
+		const success = await requestPermissions(store as Store, allOrigins);
+		
+		if (success) {
+			// Enable all sites
+			siteIds.forEach((siteId) => {
+				store.dispatch(
+					setSiteState(siteId, {
+						type: Settings.SiteStateTag.ENABLED,
+					})
+				);
+			});
+		}
+	}
+};
+
 // Connect to the background script at startup
 const connect: AppEffect = (store) => {
 	const browser = getBrowser();
@@ -267,5 +298,6 @@ export const rootEffect: AppEffect = Effect.all(
 	quoteAddBulk,
 	siteClicked,
 	confirmSiteDisabled,
+	selectAllSites,
 	connect
 );

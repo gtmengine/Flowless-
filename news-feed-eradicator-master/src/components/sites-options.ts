@@ -138,6 +138,18 @@ export const SitesOptions = (store: Store) => {
 		);
 	}
 
+	const selectAllButton = h(
+		'button.bg-active.strong.pad-1',
+		{
+			on: {
+				click: () => {
+					store.dispatch({ type: ActionType.UI_SITES_SELECT_ALL });
+				},
+			},
+		},
+		'✓ Select All Sites'
+	);
+
 	return h('div.v-stack-2', [
 		h('h2', 'Sites'),
 		...alerts,
@@ -145,6 +157,7 @@ export const SitesOptions = (store: Store) => {
 			'p',
 			"Choose sites below to enable Flowless. When you enable a site, we'll request your permission to modify that site."
 		),
+		h('div.pad-v-1', selectAllButton),
 		h(
 			'div.v-stack',
 			Object.keys(Sites).map((id: SiteId) => Site(id, Sites[id].label))
